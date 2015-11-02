@@ -1,0 +1,25 @@
+var express = require('express'),
+    multer  = require('multer')
+
+var app = express()
+app.use(multer({
+  dest: './uploads/',
+  rename: function (fieldname, filename) {
+    return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
+  }
+}))
+
+app.get('/', function(req, res){
+  res.send('<form action="" method="post" enctype="multipart/form-data">'+
+        '<input type="file" name="upload-file">'+
+        '<input type="submit" value="Upload">'+
+        '</form>');
+});
+
+app.post('/', function(req, res){
+    console.log(req.body) // form fields
+    console.log(req.files) // form files
+    res.status(204).end()
+});
+
+app.listen(80);
